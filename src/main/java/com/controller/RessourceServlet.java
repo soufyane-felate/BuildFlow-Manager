@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.text.ParseException;
+
 @WebServlet("/resource")
 public class RessourceServlet extends HttpServlet {
     @Override
@@ -22,7 +22,7 @@ public class RessourceServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
         switch (action) {
-            case "addTask":
+            case "addResource":
                 try {
                     addResource(req,resp);
                 } catch (SQLException e) {
@@ -36,20 +36,17 @@ public class RessourceServlet extends HttpServlet {
         String name = req.getParameter("name");
         String type = req.getParameter("type");
         int quantity = Integer.parseInt(req.getParameter("quantity"));
-       try {
-           Resource resource = new Resource();
-           resource.setName(name);
-           resource.setType(type);
-           resource.setQuantity(quantity);
-           ResourceDao resourceDao = new ResourceDao();
-           resourceDao.addResource(resource);
-           resp.sendRedirect("resource?action=view&id=" + resource.getId() + "&status=success");
-       } catch (SQLException e) {
-           e.printStackTrace();
-           resp.sendRedirect("resource?status=error&message=" + e.getMessage());
-       } catch (IOException e) {
-           throw new RuntimeException(e);
-       }
-
+        try {
+            Resource resource = new Resource();
+            resource.setName(name);
+            resource.setType(type);
+            resource.setQuantity(quantity);
+            ResourceDao resourceDao = new ResourceDao();
+            resourceDao.addResource(resource);
+            resp.sendRedirect("resource?action=view&id=" + resource.getId() + "&status=success");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            resp.sendRedirect("resource?status=error&message=" + e.getMessage());
+        }
     }
 }

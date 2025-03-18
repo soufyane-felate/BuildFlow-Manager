@@ -19,18 +19,16 @@ public class TaskServlet extends HttpServlet {
         req.getRequestDispatcher("task.jsp").forward(req, resp);
     }
 
-   public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
-   {
-       String action = req.getParameter("action");
-       switch (action)
-       {
-           case "create":
-               createTask(req,resp);
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+    {
+        String action = req.getParameter("action");
+        switch (action)
+        {
+            case "create":
+                createTask(req,resp);
                 break;
-       }
-   }
-
-
+        }
+    }
 
     private void createTask(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String description = req.getParameter("description");
@@ -62,7 +60,8 @@ public class TaskServlet extends HttpServlet {
             resp.sendRedirect("task?action=view&id=" + task.getId() + "&status=success");
         } catch (ParseException | SQLException e) {
             e.printStackTrace();
-            resp.sendRedirect("task.jsp?status=error&message=" + e.getMessage());
+            System.out.println( "error 1 : " +e.getMessage());
+            resp.sendRedirect("task?status=error&message=" + e.getMessage());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

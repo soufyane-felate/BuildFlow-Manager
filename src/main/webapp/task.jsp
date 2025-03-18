@@ -24,10 +24,6 @@
   ProjectDao projectDao = new ProjectDao();
   List<Project> projects= new ArrayList<>();
   projects=projectDao.getAllProjects();
-
-
-
-
 %>
 <!-- Top Header -->
 <div class="top-header d-none d-md-block">

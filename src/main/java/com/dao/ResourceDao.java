@@ -4,11 +4,14 @@ import com.model.Resource;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ResourceDao {
     public void addResource(Resource resource) throws SQLException {
-      String sql="INSERT INTO Ressource(name,type,quantity)VALUE(?,?,?,?)";
+      String sql="INSERT INTO Ressource(name,type,quantity)VALUE(?,?,?)";
       try(Connection con=DBConnection.getConnection();
           PreparedStatement prst = con.prepareStatement(sql);)
       {
@@ -17,5 +20,25 @@ public class ResourceDao {
           prst.setInt(3,resource.getQuantity());
           prst.executeUpdate();
       }
+    }
+
+    public List<Resource> getAllRessource()throws SQLException {
+        String sql="SELECT * FROM Ressource";
+        List<Resource> resourceList=new ArrayList<Resource>();
+        try(Connection con=DBConnection.getConnection();
+            PreparedStatement prst=con.prepareStatement(sql);
+            ResultSet rs=prst.executeQuery();)
+        {
+            while (rs.next()) {
+                Resource resource=new Resource();
+                resource.setId(rs.getInt("id"));
+                resource.setName(rs.getString("name"));
+                resource.setType(rs.getString("type"));
+                resource.setQuantity(rs.getInt("quantity"));
+                resourceList.add(resource);
+            }
+        }
+        return resourceList;
+
     }
 }

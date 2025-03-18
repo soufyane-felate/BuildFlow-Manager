@@ -234,13 +234,13 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="index.html">Home</a>
+                    <a class="nav-link" href="index">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">About Us</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="#">Projects</a>
+                    <a class="nav-link active" href="project">Projects</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Contact Us</a>
@@ -289,6 +289,7 @@
             <div class="col-lg-10 mx-auto">
                 <h2>Resource Details</h2>
                 <form id="resourceForm" action="resource" method="post">
+                    <input type="hidden" name="action" value="addResource">
                     <div class="row g-4">
                         <div class="col-md-12">
                             <label for="resourceName" class="form-label">Resource Name*</label>

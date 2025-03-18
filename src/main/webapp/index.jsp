@@ -62,6 +62,9 @@
                         <li><a class="dropdown-item" href="project">Projects</a></li>
                         <li><a class="dropdown-item" href="resource">Resource</a></li>
                         <li><a class="dropdown-item" href="task">Task</a></li>
+                        <li><a class="dropdown-item" href="projectList">project list</a></li>
+                        <li><a class="dropdown-item" href="taskList">task list</a></li>
+                        <li><a class="dropdown-item" href="resourceList">ressource list</a></li>
                     </ul>
                 </li>
             </ul>

@@ -21,7 +21,7 @@ public class ProjectServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
-        req.getRequestDispatcher("project.jsp").forward(req, resp);
+        req.getRequestDispatcher("project.jsp").forward(req,resp);
 
         if ("view".equals(action)) {
             viewProject(req, resp);
@@ -46,8 +46,7 @@ public class ProjectServlet extends HttpServlet {
         }
     }
 
-    private void createProject(HttpServletRequest req, HttpServletResponse resp) throws IOException
-    {
+    private void createProject(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String name = req.getParameter("name");
         String description = req.getParameter("description");
         String startDateStr = req.getParameter("startDate");
@@ -73,7 +72,7 @@ public class ProjectServlet extends HttpServlet {
             resp.sendRedirect("project?action=view&id=" + project.getId() + "&status=success");
         } catch (ParseException | SQLException e) {
             e.printStackTrace();
-            resp.sendRedirect("add-project.jsp?status=error&message=" + e.getMessage());
+            resp.sendRedirect("project?status=error&message=" + e.getMessage());
         }
     }
 
