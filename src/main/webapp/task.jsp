@@ -1,4 +1,7 @@
-<%--
+<%@ page import="com.model.Project" %>
+<%@ page import="com.dao.ProjectDao" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %><%--
   Created by IntelliJ IDEA.
   User: LEADER
   Date: 3/16/2025
@@ -17,6 +20,15 @@
     <link rel="stylesheet" href="style/task.css">
 </head>
 <body>
+<%
+  ProjectDao projectDao = new ProjectDao();
+  List<Project> projects= new ArrayList<>();
+  projects=projectDao.getAllProjects();
+
+
+
+
+%>
 <!-- Top Header -->
 <div class="top-header d-none d-md-block">
     <div class="container">
@@ -38,7 +50,7 @@
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg sticky-top">
     <div class="container">
-        <a class="navbar-brand" href="index.html">
+        <a class="navbar-brand" href="index">
             <span style="color: #FF5E14;">Constructoor</span>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -47,13 +59,13 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="index.html">Home</a>
+                    <a class="nav-link" href="index">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">About Us</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="#">Projects</a>
+                    <a class="nav-link active" href="project">Projects</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Contact Us</a>
@@ -63,8 +75,8 @@
                         Management
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="project.jsp">New Project</a></li>
-                        <li><a class="dropdown-item" href="resource.jsp">New resource</a></li>
+                        <li><a class="dropdown-item" href="project">New Project</a></li>
+                        <li><a class="dropdown-item" href="resource">New resource</a></li>
                     </ul>
                 </li>
             </ul>
@@ -85,7 +97,7 @@
                 <h1>Create New Task</h1>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.html" class="text-white">Home</a></li>
+                        <li class="breadcrumb-item"><a href="index." class="text-white">Home</a></li>
                         <li class="breadcrumb-item"><a href="#" class="text-white">Projects</a></li>
                         <li class="breadcrumb-item active text-white" aria-current="page">New Task</li>
                     </ol>
@@ -101,13 +113,19 @@
         <div class="row">
             <div class="col-lg-10 mx-auto">
                 <h2>Task Details</h2>
-                <form id="taskForm">
+                <form id="taskForm" action="task" method="post">
+                    <input type="hidden" name="action" value="create">
+
                     <div class="row g-4">
 
                         <div class="col-md-12">
                             <label for="projectSelect" class="form-label">Project*</label>
                             <select class="form-select" id="projectSelect" name="project" required>
                                 <option value="" selected disabled>Select a project</option>
+                                <%for (Project project:projects){%>
+                                <option value="<%=project.getId()%>"><%=project.getName()%></option>
+                                <% } %>
+
                             </select>
                         </div>
 
@@ -169,22 +187,7 @@
 </div>
 
 
-<script>
-    fetch('/utils/footer.html')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.text();
-        })
-        .then(data => {
-            document.getElementById('footer').innerHTML = data;
-        })
-        .catch(error => {
-            console.error('Error loading footer:', error);
-            document.getElementById('footer').innerHTML = '<p>Unable to load footer.</p>';
-        });
-</script>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>

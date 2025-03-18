@@ -250,8 +250,8 @@
                         Management
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="project.jsp">New Project</a></li>
-                        <li><a class="dropdown-item" href="task.jsp">New Task</a></li>
+                        <li><a class="dropdown-item" href="project">New Project</a></li>
+                        <li><a class="dropdown-item" href="task">New Task</a></li>
                     </ul>
                 </li>
             </ul>
@@ -288,7 +288,7 @@
         <div class="row">
             <div class="col-lg-10 mx-auto">
                 <h2>Resource Details</h2>
-                <form id="resourceForm">
+                <form id="resourceForm" action="resource" method="post">
                     <div class="row g-4">
                         <div class="col-md-12">
                             <label for="resourceName" class="form-label">Resource Name*</label>
@@ -311,10 +311,7 @@
                             <input type="number" class="form-control" name="quantity" id="resourceQuantity" required>
                         </div>
 
-                        <div class="col-md-12">
-                            <label for="supplierName" class="form-label">Supplier Name*</label>
-                            <input type="text" class="form-control" id="supplierName" name="" required>
-                        </div>
+
 
 
 

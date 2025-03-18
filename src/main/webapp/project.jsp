@@ -47,13 +47,13 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/index.jsp">Home</a>
+                    <a class="nav-link" href="/index">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">About Us</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="/project.jsp">Projects</a>
+                    <a class="nav-link active" href="/project">Projects</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Contact Us</a>
@@ -63,9 +63,9 @@
                         Management
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="project.jsp">New Project</a></li>
-                        <li><a class="dropdown-item" href="task.jsp">New Task</a></li>
-                        <li><a class="dropdown-item" href="resource.jsp">Add Resources</a></li>
+                        <li><a class="dropdown-item" href="project">New Project</a></li>
+                        <li><a class="dropdown-item" href="task">New Task</a></li>
+                        <li><a class="dropdown-item" href="resource">Add Resources</a></li>
                     </ul>
                 </li>
             </ul>
@@ -81,8 +81,8 @@
                 <h1>Create New Project</h1>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.jsp" class="text-white">Home</a></li>
-                        <li class="breadcrumb-item"><a href="/project.jsp" class="text-white">Projects</a></li>
+                        <li class="breadcrumb-item"><a href="index" class="text-white">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/project" class="text-white">Projects</a></li>
                         <li class="breadcrumb-item active text-white" aria-current="page">New Project</li>
                     </ol>
                 </nav>
@@ -97,50 +97,58 @@
         <div class="row">
             <div class="col-lg-10 mx-auto">
                 <h2>Project Information</h2>
-                <form id="projectForm">
-                    <div class="row g-4">
-                        <div class="col-md-12">
-                            <label for="projectName" class="form-label">Project Name*</label>
-                            <input type="text" class="form-control" id="projectName" name="name" required>
-                        </div>
+                <div class="card-body">
+                    <% if (request.getParameter("status") != null && request.getParameter("status").equals("error")) { %>
+                    <div class="alert alert-danger">
+                        Error: <%= request.getParameter("message") != null ? request.getParameter("message") : "Unknown error occurred" %>
+                    </div>
+                    <% } %>
 
-                        <div class="col-md-12">
-                            <label for="projectDescription" class="form-label">Project Description*</label>
-                            <textarea class="form-control" id="projectDescription" rows="4" name="description" required></textarea>
-                        </div>
+                    <form id="projectForm" action="project" method="post">
+                        <input type="hidden" name="action" value="create">
 
-                        <div class="col-md-6">
-                            <label for="startDate" class="form-label">Start Date*</label>
-                            <input type="date" class="form-control" id="startDate" name="startDate" required>
-                        </div>
+                        <div class="row g-4">
+                            <div class="col-md-12">
+                                <label for="projectName" class="form-label">Project Name*</label>
+                                <input type="text" class="form-control" id="projectName" name="name" required>
+                            </div>
 
-                        <div class="col-md-6">
-                            <label for="endDate" class="form-label">End Date*</label>
-                            <input type="date" class="form-control" id="endDate" name="endDate" required>
-                        </div>
+                            <div class="col-md-12">
+                                <label for="projectDescription" class="form-label">Project Description*</label>
+                                <textarea class="form-control" id="projectDescription" rows="4" name="description" required></textarea>
+                            </div>
 
-                        <div class="col-md-6">
-                            <label for="budget" class="form-label">Budget (€)*</label>
-                            <input type="number" class="form-control" name="budget" id="budget" required>
-                        </div>
+                            <div class="col-md-6">
+                                <label for="startDate" class="form-label">Start Date*</label>
+                                <input type="date" class="form-control" id="startDate" name="startDate" required>
+                            </div>
 
-                        <div class="col-md-6">
-                            <label for="projectManager" class="form-label">Project Manager</label>
-                            <input type="text" class="form-control" id="projectManager">
-                        </div>
+                            <div class="col-md-6">
+                                <label for="endDate" class="form-label">End Date*</label>
+                                <input type="date" class="form-control" id="endDate" name="endDate" required>
+                            </div>
 
-                        <div class="col-md-12 mt-4">
-                            <div class="d-flex justify-content-between">
-                                <a href="index.html" class="btn btn-outline-secondary">Cancel</a>
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-save me-2"></i>Save Project
-                                </button>
+                            <div class="col-md-6">
+                                <label for="budget" class="form-label">Budget ($)*</label>
+                                <input type="number" step="0.01" class="form-control" name="budget" id="budget" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="projectManager" class="form-label">Project Manager</label>
+                                <input type="text" class="form-control" id="projectManager" name="projectManager">
+                            </div>
+
+                            <div class="col-md-12 mt-4">
+                                <div class="d-flex justify-content-between">
+                                    <a href="project" class="btn btn-outline-secondary">Cancel</a>
+                                    <button type="submit" class="btn btn-primary">Save Project</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
             </div>
         </div>
+    </div>
     </div>
 </section>
 
@@ -180,30 +188,5 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
-<script>
-    document.getElementById('projectForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        const startDate = document.getElementById('startDate').value;
-        const endDate = document.getElementById('endDate').value;
-
-        if (new Date(endDate) < new Date(startDate)) {
-            alert('End date must be after the start date');
-            return;
-        }
-
-        console.log('Project created:', {
-            name: projectName,
-            description: projectDescription,
-            startDate: startDate,
-            endDate: endDate,
-            budget: budget
-        });
-
-        alert('Project created successfully!');
-        this.reset();
-    });
-
-
-</script>
 </body>
 </html>
