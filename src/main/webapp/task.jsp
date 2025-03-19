@@ -103,28 +103,17 @@
     </div>
 </section>
 
-<!-- Form Section -->
-<section class="form-section">
+<!-- Form Section for task -->
+<section class="form-section py-5">
     <div class="container">
         <div class="row">
             <div class="col-lg-10 mx-auto">
-                <h2>Task Details</h2>
+                <h2>Add Task to Project</h2>
                 <form id="taskForm" action="task" method="post">
                     <input type="hidden" name="action" value="create">
+                    <input type="hidden" name="projectId" value="<%= request.getAttribute("projectId") %>">
 
                     <div class="row g-4">
-
-                        <div class="col-md-12">
-                            <label for="projectSelect" class="form-label">Project*</label>
-                            <select class="form-select" id="projectSelect" name="project" required>
-                                <option value="" selected disabled>Select a project</option>
-                                <%for (Project project:projects){%>
-                                <option value="<%=project.getId()%>"><%=project.getName()%></option>
-                                <% } %>
-
-                            </select>
-                        </div>
-
                         <div class="col-md-12">
                             <label for="taskDescription" class="form-label">Task Description*</label>
                             <textarea class="form-control" id="taskDescription" name="description" rows="3" required></textarea>
@@ -142,7 +131,7 @@
 
                         <div class="col-12">
                             <button type="submit" class="btn btn-primary">Create Task</button>
-                            <button type="reset" class="btn btn-outline-secondary">Reset</button>
+                            <a href="project?action=view&id=<%= request.getAttribute("projectId") %>" class="btn btn-secondary">Cancel</a>
                         </div>
                     </div>
                 </form>

@@ -3,26 +3,20 @@ package com.model;
 import java.sql.Date;
 
 public class Task {
-    private int id,project_id;
+    private int id , id_project;
     private String description;
     Date start_date,end_date;
 
-    public Task(int id, int project_id,  String description, Date start_date, Date end_date) {
+    public Task(int id,int id_project,  String description, Date start_date, Date end_date) {
         this.id = id;
-        this.project_id = project_id;
+        this.id_project = id_project;
         this.description = description;
         this.start_date = start_date;
         this.end_date = end_date;
     }
 
-    public Task(int project_id,  String description, Date start_date, Date end_date) {
-        this.project_id = project_id;
-        this.description = description;
-        this.start_date = start_date;
-        this.end_date = end_date;
-    }
-
-    public Task( String description, Date start_date, Date end_date) {
+    public Task(int id_project,String description, Date start_date, Date end_date) {
+        this.id_project = id_project;
         this.description = description;
         this.start_date = start_date;
         this.end_date = end_date;
@@ -39,13 +33,7 @@ public class Task {
         this.id = id;
     }
 
-    public int getProject_id() {
-        return project_id;
-    }
 
-    public void setProject_id(int project_id) {
-        this.project_id = project_id;
-    }
 
 
 
@@ -72,5 +60,13 @@ public class Task {
 
     public void setEnd_date(Date end_date) {
         this.end_date = end_date;
+    }
+
+    public int getId_project() {
+        return id_project;
+    }
+
+    public void setId_project(int id_project) {
+        this.id_project = id_project;
     }
 }

@@ -206,3 +206,97 @@ body {
     margin-bottom: 5px;
     color: var(--dark-blue);
 }
+
+
+.card {
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+.card-body {
+    padding: 20px;
+    background: linear-gradient(135deg, #f9f9f9, #ffffff);
+}
+
+.card-text {
+    font-size: 1.1em;
+    color: #333;
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.list-group-item {
+    font-size: 0.9em;
+    color: #555;
+    border: none;
+    padding: 10px 0;
+    background-color: transparent;
+}
+
+.list-group-item strong {
+    color: #333;
+}
+
+.btn {
+    font-size: 0.85em;
+    border-radius: 20px;
+    padding: 8px 16px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #0066cc;
+    border-color: #0066cc;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #005bb5;
+    box-shadow: 0 4px 8px rgba(0, 102, 204, 0.3);
+}
+
+.btn-danger {
+    background-color: #cc0000;
+    border-color: #cc0000;
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background-color: #b50000;
+    box-shadow: 0 4px 8px rgba(204, 0, 0, 0.3);
+}
+
+/* Additional Professional Touches */
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 15px 20px;
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #333;
+}
+
+.card-footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #e0e0e0;
+    padding: 15px 20px;
+    text-align: right;
+}
+
+.card-footer .btn {
+    margin-left: 10px;
+}
+
+/* Gradient Background for Card on Hover */
+.card:hover .card-body {
+    background: linear-gradient(135deg, #ffffff, #f9f9f9);
+}

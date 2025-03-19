@@ -12,33 +12,95 @@ import java.util.List;
 
 public class TaskDao {
     public void addTask(Task task) throws SQLException {
-        String query="INSERT INTO Task(description ,start_date,end_date,projectId)VALUES(?,?,?,?)";
-        try(Connection con=DBConnection.getConnection();
-            PreparedStatement prst = con.prepareStatement(query))
-        {
+        String query = "INSERT INTO Task(description, start_date, end_date) VALUES(?, ?, ?)";
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement prst = con.prepareStatement(query)) {
             prst.setString(1, task.getDescription());
             prst.setDate(2, new java.sql.Date(task.getStart_date().getTime()));
             prst.setDate(3, new java.sql.Date(task.getEnd_date().getTime()));
-            prst.setInt(4, task.getProject_id());
             prst.executeUpdate();
         }
     }
 
     public List<Task> getAllTasks() throws SQLException {
         List<Task> tasks = new ArrayList<>();
-        String query="SELECT * FROM Task ";
-        try(Connection con=DBConnection.getConnection();
-            PreparedStatement prst=con.prepareStatement(query);
-            ResultSet res=prst.executeQuery();)
-        {
+        String query = "SELECT * FROM Task";
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement prst = con.prepareStatement(query);
+             ResultSet res = prst.executeQuery()) {
             while (res.next()) {
-                Task task=new Task();
+                Task task = new Task();
                 task.setId(res.getInt("id"));
                 task.setDescription(res.getString("description"));
                 task.setStart_date(res.getDate("start_date"));
                 task.setEnd_date(res.getDate("end_date"));
-                task.setProject_id(res.getInt("projectId"));
+                try {
+                    task.setId_project(res.getInt("projectId"));
+                } catch (SQLException e) {
+                }
                 tasks.add(task);
+            }
+        }
+        return tasks;
+    }
+
+    public Task getTaskById(int id) throws SQLException {
+        Task task = null;
+        String query = "SELECT * FROM Task WHERE id=?";
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement prst = con.prepareStatement(query)) {
+            prst.setInt(1, id);
+            try (ResultSet rs = prst.executeQuery()) {
+                if (rs.next()) {
+                    task = new Task();
+                    task.setId(rs.getInt("id"));
+                    task.setDescription(rs.getString("description"));
+                    task.setStart_date(rs.getDate("start_date"));
+                    task.setEnd_date(rs.getDate("end_date"));
+                    try {
+                        task.setId_project(rs.getInt("projectId"));
+                    } catch (SQLException e) {
+                    }
+                }
+            }
+        }
+        return task;
+    }
+
+    public void createAndAssignTask(Task task) throws SQLException {
+        String sql = "INSERT INTO Task(description, start_date, end_date, projectId) VALUES(?, ?, ?, ?)";
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement prst = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            prst.setString(1, task.getDescription());
+            prst.setDate(2, new java.sql.Date(task.getStart_date().getTime()));
+            prst.setDate(3, new java.sql.Date(task.getEnd_date().getTime()));
+            prst.setInt(4, task.getId_project());
+            prst.executeUpdate();
+
+            try (ResultSet generatedKeys = prst.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    task.setId(generatedKeys.getInt(1));
+                }
+            }
+        }
+    }
+
+    public List<Task> getTasksByProjectId(int projectId) throws SQLException {
+        List<Task> tasks = new ArrayList<>();
+        String query = "SELECT * FROM Task WHERE projectId=?";
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement prst = con.prepareStatement(query)) {
+            prst.setInt(1, projectId);
+            try (ResultSet rs = prst.executeQuery()) {
+                while (rs.next()) {
+                    Task task = new Task();
+                    task.setId(rs.getInt("id"));
+                    task.setDescription(rs.getString("description"));
+                    task.setStart_date(rs.getDate("start_date"));
+                    task.setEnd_date(rs.getDate("end_date"));
+                    task.setId_project(rs.getInt("projectId"));
+                    tasks.add(task);
+                }
             }
         }
         return tasks;

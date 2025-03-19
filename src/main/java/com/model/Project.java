@@ -3,6 +3,7 @@ package com.model;
 import java.util.Date;
 
 public class Project {
+
     private int id;
     private String name,description;
     private Date start_date,end_date;

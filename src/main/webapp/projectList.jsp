@@ -2,6 +2,8 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.model.Project" %>
 <%@ page import="com.dao.ProjectDao" %>
+<%@ page import="com.model.Task" %>
+<%@ page import="com.dao.TaskDao" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -37,14 +39,15 @@
     <div class="container">
         <div class="row">
             <%
-                ProjectDao projectDao=new ProjectDao();
+                ProjectDao projectDao = new ProjectDao();
                 List<Project> projects = projectDao.getAllProjects();
+
                 if (projects != null && !projects.isEmpty()) {
                     for (Project project : projects) {
+                        TaskDao taskDao = new TaskDao();
+                        List<Task> projectTasks = taskDao.getTasksByProjectId(project.getId());
             %>
             <div class="col-md-4 mb-4">
-                <input type="hidden" name="action" value="view">
-
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title"><%= project.getName() %></h5>
@@ -53,7 +56,10 @@
                             <li class="list-group-item"><strong>Start Date:</strong> <%= project.getStart_date() %></li>
                             <li class="list-group-item"><strong>End Date:</strong> <%= project.getEnd_date() %></li>
                             <li class="list-group-item"><strong>Budget:</strong> $<%= project.getBudget() %></li>
+
+
                         </ul>
+
                         <div class="mt-3">
                             <a href="project?action=edit&id=<%= project.getId() %>" class="btn btn-primary">Edit</a>
                             <a href="project?action=delete&id=<%= project.getId() %>"
@@ -61,8 +67,9 @@
                                onclick="return confirm('Are you sure you want to delete this project?');">
                                 Delete
                             </a>
+                            <a href="task?action=create&projectId=<%= project.getId() %>" class="btn btn-success">Add Task</a>
+                            <a href="task?action=list&projectId=<%= project.getId() %>" class="btn btn-info">List Tasks</a>
                         </div>
-
                     </div>
                 </div>
             </div>

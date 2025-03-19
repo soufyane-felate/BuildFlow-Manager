@@ -34,7 +34,7 @@
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg sticky-top">
     <div class="container">
-        <a class="navbar-brand" href="index.jsp">
+        <a class="navbar-brand" href="index">
             <span style="color: #FF5E14;">Constructoor</span>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">

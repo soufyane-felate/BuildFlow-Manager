@@ -59,7 +59,7 @@ footer {
 }
 
 :root {
-    --primary-color: #ff5e14;
+    --primary-color: rgb(255, 94, 20);
     --dark-blue: #1a3263;
     --dark-gray: rgb(10, 11, 14);
     --light-gray: #f8f9fa;

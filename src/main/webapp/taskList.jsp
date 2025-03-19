@@ -4,6 +4,8 @@
 <%@ page import="com.dao.TaskDao" %>
 <%@ page import="com.dao.TaskDao" %>
 <%@ page import="com.model.Task" %>
+<%@ page import="com.dao.ProjectDao" %>
+<%@ page import="com.model.Project" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -15,6 +17,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style/project.css">
 </head>
+
 <body>
 
 <!-- Page Header -->
@@ -37,41 +40,61 @@
 <!-- Task List Section -->
 <section class="project-list-section">
     <div class="container">
-        <div class="row">
+        <div class="container py-5">
             <%
-                TaskDao taskDao=new TaskDao();
-                List<Task>tasks=taskDao.getAllTasks();
-                if (tasks!=null && !tasks.isEmpty())
-                {
-                    for (Task task :tasks)
-                    {
-
+                int projectId = (Integer) request.getAttribute("projectId");
+                ProjectDao projectDao = new ProjectDao();
+                Project project = projectDao.getProjectById(projectId);
+                List<Task> tasks = (List<Task>) request.getAttribute("tasks");
             %>
-            <div class="col-md-4 mb-4">
 
-                <div class="card">
-                    <div class="card-body">
-                        <p class="card-text"><%= task.getDescription() %></p>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item"><strong>Start Date:</strong> <%= task.getStart_date() %></li>
-                            <li class="list-group-item"><strong>End Date:</strong> <%= task.getEnd_date() %></li>
-                            <li class="list-group-item"><strong>project id:</strong> <%= task.getProject_id() %></li>
-                        </ul>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>Tasks for Project: <%= project.getName() %></h2>
+                <a href="task?action=create&projectId=<%= projectId %>" class="btn btn-primary">Add New Task</a>
+            </div>
+
+            <div class="row">
+                <%
+                    if (tasks != null && !tasks.isEmpty()) {
+                        for (Task task : tasks) {
+                %>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text"><%= task.getDescription() %></p>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"><strong>Start Date:</strong> <%= task.getStart_date() %></li>
+                                <li class="list-group-item"><strong>End Date:</strong> <%= task.getEnd_date() %></li>
+                            </ul>
+
+                            <div class="mt-3">
+                                <a href="task?action=edit&id=<%= task.getId() %>" class="btn btn-sm btn-primary">Edit</a>
+                                <a href="task?action=delete&id=<%= task.getId() %>&projectId=<%= projectId %>"
+                                   class="btn btn-sm btn-danger"
+                                   onclick="return confirm('Are you sure you want to delete this task?');">
+                                    Delete
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <%
-                }
-            } else {
-            %>
-            <div class="col-12">
-                <div class="alert alert-info" role="alert">
-                    No tasks found.
+                <%
+                    }
+                } else {
+                %>
+                <div class="col-12">
+                    <div class="alert alert-info" role="alert">
+                        No tasks found for this project.
+                    </div>
                 </div>
+                <%
+                    }
+                %>
             </div>
-            <%
-                }
-            %>
+
+            <div class="mt-4">
+                <a href="project?action=view&id=<%= projectId %>" class="btn btn-secondary">Back to Project</a>
+            </div>
         </div>
     </div>
 </section>
