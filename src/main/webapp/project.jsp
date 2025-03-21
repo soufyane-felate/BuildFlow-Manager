@@ -185,6 +185,34 @@
     </div>
 
 </footer>
+<script>
+    document.getElementById("projectForm").addEventListener("submit", function(event) {
+        const projectName = document.getElementById("projectName").value.trim();
+        const projectDescription = document.getElementById("projectDescription").value.trim();
+        const startDate = document.getElementById("startDate").value;
+        const endDate = document.getElementById("endDate").value;
+        const budget = parseFloat(document.getElementById("budget").value);
+
+        if (!projectName || !projectDescription || !startDate || !endDate || isNaN(budget)) {
+            alert("Please fill in all required fields.");
+            event.preventDefault();
+            return;
+        }
+
+        if (new Date(endDate) < new Date(startDate)) {
+            alert("End date cannot be earlier than start date.");
+            event.preventDefault();
+            return;
+        }
+
+        if (budget <= 0) {
+            alert("Budget must be a positive number.");
+            event.preventDefault();
+            return;
+        }
+    });
+</script>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 

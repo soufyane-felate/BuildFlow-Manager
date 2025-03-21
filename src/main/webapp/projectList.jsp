@@ -14,6 +14,69 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style/project.css">
+    <style>
+        .btn {
+            font-size: 1em; /* Professional size */
+            border-radius: 12px; /* Rounded corners */
+            padding: 10px 20px; /* Adjusted padding for better proportions */
+            margin: 5px 8px; /* Consistent spacing between buttons */
+            transition: all 0.3s ease-in-out; /* Smooth hover effects */
+            text-align: center;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, #005bb5, #0077e6); /* Gradient background for primary button */
+            border: none;
+            color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(90deg, #004d9e, #0066cc); /* Hover gradient */
+            box-shadow: 0 6px 12px rgba(0, 102, 204, 0.3);
+            transform: translateY(-2px); /* Hover lift effect */
+        }
+
+        .btn-danger {
+            background: linear-gradient(90deg, #b50000, #e60000);
+            border: none;
+            color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-danger:hover {
+            background: linear-gradient(90deg, #990000, #cc0000);
+            box-shadow: 0 6px 12px rgba(204, 0, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: linear-gradient(90deg, #008a00, #00b300); /* Green gradient */
+            border: none;
+            color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(90deg, #007a00, #009900);
+            box-shadow: 0 6px 12px rgba(0, 153, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-info {
+            background: linear-gradient(90deg, #17a2b8, #1cc5dc); /* Blue info gradient */
+            border: none;
+            color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-info:hover {
+            background: linear-gradient(90deg, #139ba7, #17a2b8);
+            box-shadow: 0 6px 12px rgba(23, 162, 184, 0.3);
+            transform: translateY(-2px);
+        }
+    </style>
 </head>
 <body>
 
@@ -62,16 +125,11 @@
 
                         <div class="mt-3">
                             <a href="project?action=edit&id=<%= project.getId() %>" class="btn btn-primary">Edit</a>
-                            <a href="project?action=delete&id=<%= project.getId() %>"
-                               class="btn btn-danger"
-                               onclick="return confirm('Are you sure you want to delete this project?');">
-                                Delete
-                            </a>
+                            <a href="project?action=delete&id=<%= project.getId() %>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this project?');">Delete</a>
                             <a href="task?action=create&projectId=<%= project.getId() %>" class="btn btn-success">Add Task</a>
-                            <a href="resource?action=addResource&projectId=<%= project.getId() %>" class="btn btn-success">Add resource</a>
-
-                            <a href="task?action=list&projectId=<%= project.getId() %>" class="btn btn-info">List Tasks with ressource</a>
+                            <a href="task?action=list&projectId=<%= project.getId() %>" class="btn btn-info">List Tasks with Resource</a>
                         </div>
+
                     </div>
                 </div>
             </div>

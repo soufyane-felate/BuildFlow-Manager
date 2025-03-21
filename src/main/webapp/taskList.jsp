@@ -16,6 +16,68 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style/project.css">
+    <style>.btn {
+        font-size: 1em;
+        border-radius: 12px;
+        padding: 10px 20px;
+
+        margin: 5px 8px;
+        transition: all 0.3s ease-in-out;
+        text-align: center;
+        display: inline-block;
+    }
+
+    .btn-primary {
+        background: linear-gradient(90deg, #005bb5, #0077e6);
+        border: none;
+        color: #fff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(90deg, #004d9e, #0066cc);
+        box-shadow: 0 6px 12px rgba(0, 102, 204, 0.3);
+        transform: translateY(-2px);
+    }
+
+    .btn-danger {
+        background: linear-gradient(90deg, #b50000, #e60000);
+        border: none;
+        color: #fff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-danger:hover {
+        background: linear-gradient(90deg, #990000, #cc0000);
+        box-shadow: 0 6px 12px rgba(204, 0, 0, 0.3);
+        transform: translateY(-2px);
+    }
+
+    .btn-success {
+        background: linear-gradient(90deg, #008a00, #00b300);
+        border: none;
+        color: #fff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-success:hover {
+        background: linear-gradient(90deg, #007a00, #009900);
+        box-shadow: 0 6px 12px rgba(0, 153, 0, 0.3);
+        transform: translateY(-2px);
+    }
+
+    .btn-info {
+        background: linear-gradient(90deg, #17a2b8, #1cc5dc);
+        border: none;
+        color: #fff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-info:hover {
+        background: linear-gradient(90deg, #139ba7, #17a2b8);
+        box-shadow: 0 6px 12px rgba(23, 162, 184, 0.3);
+        transform: translateY(-2px);
+    }</style>
 </head>
 
 <body>
