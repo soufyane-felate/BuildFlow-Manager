@@ -1,9 +1,6 @@
 package com.dao;
 
-
-import com.model.Resource;
-import com.model.Task;
-
+import com.model.Assignment;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,76 +10,138 @@ import java.util.List;
 
 public class AssignmentDao {
 
-    public void addResource(Resource resource) throws SQLException {
-        String sql = "INSERT INTO Ressource(name, type, quantity, supplierInfo) VALUES (?, ?, ?, ?)";
-        try (Connection con = DBConnection.getConnection();
-             PreparedStatement prst = con.prepareStatement(sql)) {
-            prst.setString(1, resource.getName());
-            prst.setString(2, resource.getType());
-            prst.setInt(3, resource.getQuantity());
-            prst.setString(4, resource.getSupplierInfo());
+    public void assignResourceToTask(int taskId, int resourceId, int quantity) throws SQLException {
+        Connection con = null;
+        PreparedStatement prst = null;
+
+        try {
+            con = DBConnection.getConnection();
+            con.setAutoCommit(false);
+
+            // First, decrease the resource quantity
+            ResourceDao resourceDao = new ResourceDao();
+            resourceDao.decreaseResourceQuantity(resourceId, quantity);
+
+            // Then, create the assignment
+            String query = "INSERT INTO Assignment(taskId, ressourceId, userquantity) VALUES(?, ?, ?)";
+            prst = con.prepareStatement(query);
+            prst.setInt(1, taskId);
+            prst.setInt(2, resourceId);
+            prst.setInt(3, quantity);
             prst.executeUpdate();
-        }
-    }
 
-    public List<Resource> getAllResources() throws SQLException {
-        String sql = "SELECT * FROM Ressource";
-        List<Resource> resourceList = new ArrayList<>();
-        try (Connection con = DBConnection.getConnection();
-             PreparedStatement prst = con.prepareStatement(sql);
-             ResultSet rs = prst.executeQuery()) {
-
-            while (rs.next()) {
-                Resource resource = new Resource();
-                resource.setId(rs.getInt("id"));
-                resource.setName(rs.getString("name"));
-                resource.setType(rs.getString("type"));
-                resource.setQuantity(rs.getInt("quantity"));
-                resource.setSupplierInfo(rs.getString("supplierInfo"));
-                resourceList.add(resource);
+            con.commit();
+        } catch (SQLException e) {
+            if (con != null) {
+                try {
+                    con.rollback();
+                } catch (SQLException ex) {
+                    throw new SQLException("Error during transaction rollback", ex);
+                }
+            }
+            throw e;
+        } finally {
+            if (prst != null) {
+                prst.close();
+            }
+            if (con != null) {
+                con.setAutoCommit(true);
+                con.close();
             }
         }
-        return resourceList;
     }
 
-    public void updateResource(Resource resource) throws SQLException {
-        String query = "UPDATE Ressource SET name=?, type=?, quantity=?, supplierInfo=? WHERE id=?";
+    public Assignment getAssignmentById(int id) throws SQLException {
+        String query = "SELECT a.id, a.taskId, a.ressourceId, a.userquantity, r.name, r.type " +
+                "FROM Assignment a " +
+                "JOIN Ressource r ON a.ressourceId = r.id " +
+                "WHERE a.id = ?";
+
         try (Connection con = DBConnection.getConnection();
              PreparedStatement prst = con.prepareStatement(query)) {
-            prst.setString(1, resource.getName());
-            prst.setString(2, resource.getType());
-            prst.setInt(3, resource.getQuantity());
-            prst.setString(4, resource.getSupplierInfo());
-            prst.setInt(5, resource.getId());
-            prst.executeUpdate();
+            prst.setInt(1, id);
+            try (ResultSet rs = prst.executeQuery()) {
+                if (rs.next()) {
+                    Assignment assignment = new Assignment();
+                    assignment.setId(rs.getInt("id"));
+                    assignment.setTaskId(rs.getInt("taskId"));
+                    assignment.setResourceId(rs.getInt("ressourceId"));
+                    assignment.setQuantity(rs.getInt("userquantity"));
+                    assignment.setResourceName(rs.getString("name"));
+                    assignment.setResourceType(rs.getString("type"));
+                    return assignment;
+                }
+            }
         }
+        return null;
     }
 
-    public void deleteResource(int resourceId) throws SQLException {
-        String query = "DELETE FROM Ressource WHERE id=?";
+    public List<Assignment> getAssignmentsByTaskId(int taskId) throws SQLException {
+        List<Assignment> assignments = new ArrayList<>();
+        String query = "SELECT a.id, a.taskId, a.ressourceId, a.userquantity, r.name, r.type " +
+                "FROM Assignment a " +
+                "JOIN Ressource r ON a.ressourceId = r.id " +
+                "WHERE a.taskId = ?";
+
         try (Connection con = DBConnection.getConnection();
              PreparedStatement prst = con.prepareStatement(query)) {
-            prst.setInt(1, resourceId);
-            prst.executeUpdate();
+            prst.setInt(1, taskId);
+            try (ResultSet rs = prst.executeQuery()) {
+                while (rs.next()) {
+                    Assignment assignment = new Assignment();
+                    assignment.setId(rs.getInt("id"));
+                    assignment.setTaskId(rs.getInt("taskId"));
+                    assignment.setResourceId(rs.getInt("ressourceId"));
+                    assignment.setQuantity(rs.getInt("userquantity"));
+                    assignment.setResourceName(rs.getString("name"));
+                    assignment.setResourceType(rs.getString("type"));
+                    assignments.add(assignment);
+                }
+            }
         }
+        return assignments;
     }
 
-    public void assignResourceToTask(int taskId, int resourceId, int usedQuantity) throws SQLException {
-        String assignQuery = "INSERT INTO Assignment(taskId, ressourceId, userquantity) VALUES (?, ?, ?)";
-        String updateResourceQuery = "UPDATE Ressource SET quantity = quantity - ? WHERE id = ?";
+    public void deleteAssignment(int assignmentId) throws SQLException {
+        Connection con = null;
+        PreparedStatement prst = null;
 
-        try (Connection con = DBConnection.getConnection();
-             PreparedStatement assignStmt = con.prepareStatement(assignQuery);
-             PreparedStatement updateStmt = con.prepareStatement(updateResourceQuery)) {
+        try {
+            // Get the assignment details first to know how much to return to resource
+            Assignment assignment = getAssignmentById(assignmentId);
+            if (assignment == null) return;
 
-            assignStmt.setInt(1, taskId);
-            assignStmt.setInt(2, resourceId);
-            assignStmt.setInt(3, usedQuantity);
-            assignStmt.executeUpdate();
+            con = DBConnection.getConnection();
+            con.setAutoCommit(false);
 
-            updateStmt.setInt(1, usedQuantity);
-            updateStmt.setInt(2, resourceId);
-            updateStmt.executeUpdate();
+            // First, delete the assignment
+            String query = "DELETE FROM Assignment WHERE id = ?";
+            prst = con.prepareStatement(query);
+            prst.setInt(1, assignmentId);
+            prst.executeUpdate();
+
+            // Then, increase the resource quantity
+            ResourceDao resourceDao = new ResourceDao();
+            resourceDao.increaseResourceQuantity(assignment.getResourceId(), assignment.getQuantity());
+
+            con.commit();
+        } catch (SQLException e) {
+            if (con != null) {
+                try {
+                    con.rollback();
+                } catch (SQLException ex) {
+                    throw new SQLException("Error during transaction rollback", ex);
+                }
+            }
+            throw e;
+        } finally {
+            if (prst != null) {
+                prst.close();
+            }
+            if (con != null) {
+                con.setAutoCommit(true);
+                con.close();
+            }
         }
     }
 }

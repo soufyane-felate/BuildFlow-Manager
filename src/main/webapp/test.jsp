@@ -1,59 +1,83 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: LEADER
-  Date: 3/17/2025
-  Time: 12:59 PM
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="com.dao.ResourceDao" %>
+<%@ page import="com.model.Resource" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Resource Inventory</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Resource Inventory</h2>
+        <a href="resource.jsp" class="btn btn-primary">Add New Resource</a>
+    </div>
 
-<form id="projectForm" action="project" method="post">
-    <input type="hidden" name="action" value="create">
+    <%
+        String status = request.getParameter("status");
+        String message = request.getParameter("message");
 
-    <div class="row g-4">
-        <div class="col-md-12">
-            <label for="projectName" class="form-label">Project Name*</label>
-            <input type="text" class="form-control" id="projectName" name="name" required>
-        </div>
+        if (status != null) {
+            String alertClass = status.equals("success") ? "alert-success" : "alert-danger";
+    %>
+    <div class="alert <%= alertClass %> alert-dismissible fade show" role="alert">
+        <%= message != null ? message : (status.equals("success") ? "Operation completed successfully." : "An error occurred.") %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <% } %>
 
-        <div class="col-md-12">
-            <label for="projectDescription" class="form-label">Project Description*</label>
-            <textarea class="form-control" id="projectDescription" rows="4" name="description" required></textarea>
-        </div>
+    <div class="row">
+        <%
+            List<Resource> resources = (List<Resource>) request.getAttribute("resources");
+            if (resources != null && !resources.isEmpty()) {
+                for (Resource resource : resources) {
+        %>
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><%= resource.getName() %></h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Type:</strong> <%= resource.getType() %></li>
+                        <li class="list-group-item">
+                            <strong>Quantity:</strong>
+                            <span class="<%= resource.getQuantity() > 0 ? "text-success" : "text-danger" %>">
+                                        <%= resource.getQuantity() %>
+                                    </span>
+                        </li>
+                        <li class="list-group-item"><strong>Supplier:</strong> <%= resource.getSupplierInfo() %></li>
+                    </ul>
 
-        <div class="col-md-6">
-            <label for="startDate" class="form-label">Start Date*</label>
-            <input type="date" class="form-control" id="startDate" name="startDate" required>
-        </div>
-
-        <div class="col-md-6">
-            <label for="endDate" class="form-label">End Date*</label>
-            <input type="date" class="form-control" id="endDate" name="endDate" required>
-        </div>
-
-        <div class="col-md-6">
-            <label for="budget" class="form-label">Budget ($)*</label>
-            <input type="number" step="0.01" class="form-control" name="budget" id="budget" required>
-        </div>
-
-        <div class="col-md-6">
-            <label for="projectManager" class="form-label">Project Manager</label>
-            <input type="text" class="form-control" id="projectManager" name="projectManager">
-        </div>
-
-        <div class="col-md-12 mt-4">
-            <div class="d-flex justify-content-between">
-                <a href="project" class="btn btn-outline-secondary">Cancel</a>
-                <button type="submit" class="btn btn-primary">Save Project</button>
+                    <div class="mt-3">
+                        <a href="resource?action=edit&id=<%= resource.getId() %>" class="btn btn-sm btn-primary">Edit</a>
+                        <a href="resource?action=delete&id=<%= resource.getId() %>"
+                           class="btn btn-sm btn-danger"
+                           onclick="return confirm('Are you sure you want to delete this resource?');">
+                            Delete
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
+        <%
+            }
+        } else {
+        %>
+        <div class="col-12">
+            <div class="alert alert-info" role="alert">
+                No resources found. Add some resources to get started.
+            </div>
+        </div>
+        <%
+            }
+        %>
     </div>
-</form>
 
+    <div class="mt-4">
+        <a href="index.jsp" class="btn btn-secondary">Back to Dashboard</a>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

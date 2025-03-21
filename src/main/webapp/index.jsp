@@ -60,7 +60,7 @@
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="#">Services</a></li>
                         <li><a class="dropdown-item" href="createproject">Projects</a></li>
-                        <li><a class="dropdown-item" href="resource">Resource</a></li>
+                        <li><a class="dropdown-item" href="addresource">Resource</a></li>
                         <li><a class="dropdown-item" href="task">Task</a></li>
                         <li><a class="dropdown-item" href="projectList">project list</a></li>
                         <li><a class="dropdown-item" href="resourceList">ressource list</a></li>

@@ -74,7 +74,10 @@
                                    onclick="return confirm('Are you sure you want to delete this task?');">
                                     Delete
                                 </a>
-                                <a href="resourceList" class="btn btn-sm btn-outline-primary">Add resource</a>
+                                <a href="resource?action=select&taskId=<%= task.getId() %>&projectId=<%= projectId %>"
+                                   class="btn btn-sm btn-outline-primary">Add resource</a>
+                                <a href="resource?action=viewAssignments&taskId=<%= task.getId() %>&projectId=<%= projectId %>"
+                                   class="btn btn-sm btn-outline-info">View Resources</a>
                             </div>
                         </div>
                     </div>
