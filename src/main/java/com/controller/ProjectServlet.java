@@ -21,9 +21,9 @@ public class ProjectServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
-        req.getRequestDispatcher("project.jsp").forward(req,resp);
 
-        if ("view".equals(action)) {
+
+         if ("view".equals(action)) {
             viewProject(req, resp);
         } else if ("edit".equals(action)) {
             showEditForm(req, resp);
@@ -38,7 +38,10 @@ public class ProjectServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         String action = req.getParameter("action");
-
+        if (action == null) {
+            resp.sendRedirect("project?status=error&message=Invalid action");
+            return;
+        }
         if ("create".equals(action)) {
             createProject(req, resp);
         } else if ("update".equals(action)) {
@@ -77,12 +80,26 @@ public class ProjectServlet extends HttpServlet {
     }
 
     private void updateProject(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        int id = Integer.parseInt(req.getParameter("id"));
+        int id;
+        try {
+            id = Integer.parseInt(req.getParameter("id"));
+        } catch (NumberFormatException e) {
+            resp.sendRedirect("project?status=error&message=Invalid project ID");
+            return;
+        }
+
         String name = req.getParameter("name");
         String description = req.getParameter("description");
         String startDateStr = req.getParameter("startDate");
         String endDateStr = req.getParameter("endDate");
-        double budget = Double.parseDouble(req.getParameter("budget"));
+
+        double budget;
+        try {
+            budget = Double.parseDouble(req.getParameter("budget"));
+        } catch (NumberFormatException e) {
+            resp.sendRedirect("edit-project.jsp?id=" + id + "&status=error&message=Invalid budget format");
+            return;
+        }
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -102,12 +119,12 @@ public class ProjectServlet extends HttpServlet {
             projectDao.updateProject(project);
 
             resp.sendRedirect("project?action=view&id=" + id + "&status=success");
-        } catch (ParseException | SQLException e) {
-            e.printStackTrace();
-            resp.sendRedirect("edit-project.jsp?id=" + id + "&status=error&message=" + e.getMessage());
+        } catch (ParseException e) {
+            resp.sendRedirect("edit-project.jsp?id=" + id + "&status=error&message=Invalid date format");
+        } catch (SQLException e) {
+            resp.sendRedirect("edit-project.jsp?id=" + id + "&status=error&message=Database error: " + e.getMessage());
         }
     }
-
     private void viewProject(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int id = Integer.parseInt(req.getParameter("id"));
 
@@ -117,7 +134,7 @@ public class ProjectServlet extends HttpServlet {
 
             if (project != null) {
                 req.setAttribute("project", project);
-                req.getRequestDispatcher("project-detail.jsp").forward(req, resp);
+                req.getRequestDispatcher("projectList").forward(req, resp);
             } else {
                 resp.sendRedirect("project?status=error&message=Project not found");
             }
@@ -166,10 +183,10 @@ public class ProjectServlet extends HttpServlet {
             List<Project> projects = projectDao.getAllProjects();
 
             req.setAttribute("projects", projects);
-            req.getRequestDispatcher("project-list.jsp").forward(req, resp);
+            req.getRequestDispatcher("projectList").forward(req, resp);
         } catch (SQLException e) {
             e.printStackTrace();
-            resp.sendRedirect("index.jsp?status=error&message=" + e.getMessage());
+            resp.sendRedirect("index?status=error&message=" + e.getMessage());
         }
     }
 }

@@ -53,6 +53,7 @@
                         <h5 class="card-title">Name : <%= resource.getName()%></h5>
                         <p class="card-text">type : <%= resource.getType()%></p>
                         <p class="card-text">quantity : <%=resource.getQuantity() %></p>
+                        <p class="card-title">supplierInfo : <%= resource.getSupplierInfo()%></p>
 
                         <div class="mt-3">
                             <a href="editProject.jsp?id=<%= resource.getId() %>" class="btn btn-primary">Edit</a>

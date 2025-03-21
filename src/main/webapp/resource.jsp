@@ -272,8 +272,8 @@
                 <h1>Add New Resources</h1>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.html" class="text-white">Home</a></li>
-                        <li class="breadcrumb-item"><a href="#" class="text-white">Projects</a></li>
+                        <li class="breadcrumb-item"><a href="index" class="text-white">Home</a></li>
+                        <li class="breadcrumb-item"><a href="createproject" class="text-white">Projects</a></li>
                         <li class="breadcrumb-item active text-white" aria-current="page">Add Resources</li>
                     </ol>
                 </nav>
@@ -312,13 +312,13 @@
                             <input type="number" class="form-control" name="quantity" id="resourceQuantity" required>
                         </div>
 
-
-
-
-
                         <div class="col-12">
                             <button type="submit" class="btn btn-primary">Add Resource</button>
                             <button type="reset" class="btn btn-outline-secondary">Reset</button>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="supplierInfo" class="form-label">Task supplierInfo*</label>
+                            <textarea class="form-control" id="supplierInfo" name="supplierInfo" rows="3" required></textarea>
                         </div>
                     </div>
                 </form>

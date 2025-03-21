@@ -74,6 +74,7 @@
                                    onclick="return confirm('Are you sure you want to delete this task?');">
                                     Delete
                                 </a>
+                                <a href="resourceList" class="btn btn-sm btn-outline-primary">Add resource</a>
                             </div>
                         </div>
                     </div>

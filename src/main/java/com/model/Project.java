@@ -9,25 +9,7 @@ public class Project {
     private Date start_date,end_date;
     private double budget;
 
-    public Project(int id, String name, String description, Date start_date, Date end_date, double budget) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.start_date = start_date;
-        this.end_date = end_date;
-        this.budget = budget;
-    }
 
-    public Project(String name, String description, Date start_date, Date end_date, double budget) {
-        this.name = name;
-        this.description = description;
-        this.start_date = start_date;
-        this.end_date = end_date;
-        this.budget = budget;
-    }
-
-    public Project() {
-    }
 
     public int getId() {
         return id;

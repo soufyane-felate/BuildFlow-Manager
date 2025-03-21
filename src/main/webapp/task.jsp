@@ -93,8 +93,8 @@
                 <h1>Create New Task</h1>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index." class="text-white">Home</a></li>
-                        <li class="breadcrumb-item"><a href="#" class="text-white">Projects</a></li>
+                        <li class="breadcrumb-item"><a href="index" class="text-white">Home</a></li>
+                        <li class="breadcrumb-item"><a href="project" class="text-white">Projects</a></li>
                         <li class="breadcrumb-item active text-white" aria-current="page">New Task</li>
                     </ol>
                 </nav>
@@ -118,6 +118,7 @@
                             <label for="taskDescription" class="form-label">Task Description*</label>
                             <textarea class="form-control" id="taskDescription" name="description" rows="3" required></textarea>
                         </div>
+
 
                         <div class="col-md-6">
                             <label for="startDate" class="form-label">Start Date*</label>

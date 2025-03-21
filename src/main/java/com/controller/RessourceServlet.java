@@ -35,12 +35,14 @@ public class RessourceServlet extends HttpServlet {
     private void addResource(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
         String name = req.getParameter("name");
         String type = req.getParameter("type");
+        String supplierInfo=req.getParameter("supplierInfo");
         int quantity = Integer.parseInt(req.getParameter("quantity"));
         try {
             Resource resource = new Resource();
             resource.setName(name);
             resource.setType(type);
             resource.setQuantity(quantity);
+            resource.setSupplierInfo(supplierInfo);
             ResourceDao resourceDao = new ResourceDao();
             resourceDao.addResource(resource);
             resp.sendRedirect("resource?action=view&id=" + resource.getId() + "&status=success");

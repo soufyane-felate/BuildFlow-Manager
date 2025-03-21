@@ -68,7 +68,7 @@ public class TaskDao {
     }
 
     public void createAndAssignTask(Task task) throws SQLException {
-        String sql = "INSERT INTO Task(description, start_date, end_date, projectId) VALUES(?, ?, ?, ?)";
+        String sql = "INSERT INTO Task(description, start_date, end_date, projectId) VALUES(?, ?, ?,?)";
         try (Connection con = DBConnection.getConnection();
              PreparedStatement prst = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
             prst.setString(1, task.getDescription());

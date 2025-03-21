@@ -68,7 +68,9 @@
                                 Delete
                             </a>
                             <a href="task?action=create&projectId=<%= project.getId() %>" class="btn btn-success">Add Task</a>
-                            <a href="task?action=list&projectId=<%= project.getId() %>" class="btn btn-info">List Tasks</a>
+                            <a href="resource?action=addResource&projectId=<%= project.getId() %>" class="btn btn-success">Add Task</a>
+
+                            <a href="task?action=list&projectId=<%= project.getId() %>" class="btn btn-info">List Tasks with ressource</a>
                         </div>
                     </div>
                 </div>
