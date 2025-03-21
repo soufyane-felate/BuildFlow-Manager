@@ -68,9 +68,50 @@ public class RessourceServlet extends HttpServlet {
                     throw new RuntimeException(e);
                 }
                 break;
+            case "updateResource":
+                try {
+                    updateResource(req, resp);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                break;
+            case "deleteResource":
+                try {
+                    deleteResource(req, resp);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                break;
         }
     }
+    private void updateResource(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
+        int id = Integer.parseInt(req.getParameter("id"));
+        String name = req.getParameter("name");
+        String type = req.getParameter("type");
+        int quantity = Integer.parseInt(req.getParameter("quantity"));
+        String supplierInfo = req.getParameter("supplierInfo");
 
+        Resource resource = new Resource();
+        resource.setId(id);
+        resource.setName(name);
+        resource.setType(type);
+        resource.setQuantity(quantity);
+        resource.setSupplierInfo(supplierInfo);
+
+        ResourceDao resourceDao = new ResourceDao();
+        resourceDao.updateResource(resource);
+
+        resp.sendRedirect("resource?action=list&status=success");
+    }
+
+    private void deleteResource(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
+        int resourceId = Integer.parseInt(req.getParameter("id"));
+
+        ResourceDao resourceDao = new ResourceDao();
+        resourceDao.deleteResource(resourceId);
+
+        resp.sendRedirect("resource?action=list&status=success");
+    }
     private void listResources(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             ResourceDao resourceDao = new ResourceDao();

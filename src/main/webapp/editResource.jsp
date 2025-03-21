@@ -1,16 +1,25 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="java.util.List" %>
-<%@ page import="com.model.Project" %>
-<%@ page import="com.dao.ProjectDao" %>
-<%@ page import="com.dao.ResourceDao" %>
 <%@ page import="com.model.Resource" %>
+<%@ page import="com.dao.ResourceDao" %>
+<%@ page import="java.sql.SQLException" %>
+
+<%
+    Resource resource = null;
+    int resourceId = Integer.parseInt(request.getParameter("id"));
+    ResourceDao resourceDao = new ResourceDao();
+    try {
+        resource = resourceDao.getResourceById(resourceId);
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+%>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project List - Constructoor</title>
+    <title>Edit Resource - Constructoor</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style/project.css">
@@ -22,11 +31,11 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <h1>Resource List</h1>
+                <h1>Edit Resource</h1>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index" class="text-white">Home</a></li>
-                        <li class="breadcrumb-item active text-white" aria-current="page">Ressource</li>
+                        <li class="breadcrumb-item active text-white" aria-current="page">Edit Resource</li>
                     </ol>
                 </nav>
             </div>
@@ -34,53 +43,47 @@
     </div>
 </section>
 
-<!-- Resource List Section -->
-<section class="project-list-section">
+<!-- Edit Resource Form -->
+<section class="edit-resource-section">
     <div class="container">
         <div class="row">
-            <%
-              ResourceDao resourceDao = new ResourceDao();
-              List<Resource>resources=resourceDao.getAllRessource();
-              if (!resources.isEmpty()&&resources!=null){
-                  for (Resource resource : resources){
+            <div class="col-md-6 offset-md-3">
+                <div class="card shadow p-4">
+                    <h3 class="card-title text-center mb-4">Edit Resource</h3>
+                    <form action="resource" method="post">
+                        <input type="hidden" name="action" value="updateResource">
+                        <input type="hidden" name="id" value="<%= resource.getId() %>">
 
-            %>
-            <div class="col-md-4 mb-4">
-                <input type="hidden" name="action" value="view">
-
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Name : <%= resource.getName()%></h5>
-                        <p class="card-text">type : <%= resource.getType()%></p>
-                        <p class="card-text">quantity : <%=resource.getQuantity() %></p>
-                        <p class="card-title">supplierInfo : <%= resource.getSupplierInfo()%></p>
-
-                        <div class="mt-3">
-                            <a href="editResource.jsp?id=<%= resource.getId() %>" class="btn btn-primary">Edit</a>
-                            <a href="resource?action=delete&id=<%= resource.getId() %>"
-                               class="btn btn-danger"
-                               onclick="return confirm('Are you sure you want to delete this resource?');">
-                                Delete
-                            </a>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="name" name="name" value="<%= resource.getName() %>" required>
                         </div>
-                    </div>
+
+                        <div class="mb-3">
+                            <label for="type" class="form-label">Type</label>
+                            <input type="text" class="form-control" id="type" name="type" value="<%= resource.getType() %>" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="quantity" class="form-label">Quantity</label>
+                            <input type="number" class="form-control" id="quantity" name="quantity" value="<%= resource.getQuantity() %>" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="supplierInfo" class="form-label">Supplier Info</label>
+                            <input type="text" class="form-control" id="supplierInfo" name="supplierInfo" value="<%= resource.getSupplierInfo() %>" required>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Update Resource</button>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <%
-                }
-            } else {
-            %>
-            <div class="col-12">
-                <div class="alert alert-info" role="alert">
-                    No projects found.
-                </div>
-            </div>
-            <%
-                }
-            %>
         </div>
     </div>
 </section>
+
 
 <footer id="footer">
     <div class="container">
@@ -113,8 +116,6 @@
         </div>
     </div>
 </footer>
-<script >
-</script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
