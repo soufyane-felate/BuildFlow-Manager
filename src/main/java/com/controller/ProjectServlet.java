@@ -135,9 +135,8 @@ public class ProjectServlet extends HttpServlet {
             if (project != null) {
                 req.setAttribute("project", project);
                 req.getRequestDispatcher("projectList").forward(req, resp);
-            } else {
-                resp.sendRedirect("project?status=error&message=Project not found");
             }
+            else {resp.sendRedirect("project");}
         } catch (SQLException e) {
             e.printStackTrace();
             resp.sendRedirect("project?status=error&message=" + e.getMessage());

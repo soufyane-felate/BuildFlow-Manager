@@ -28,6 +28,10 @@ public class TaskServlet extends HttpServlet {
             req.getRequestDispatcher("task.jsp").forward(req, resp);
         } else if ("list".equals(action)) {
             listProjectTasks(req, resp);
+        } else if ("edit".equals(action)) {
+            editTask(req, resp);
+        } else if ("delete".equals(action)) {
+            deleteTask(req, resp);
         } else {
             req.getRequestDispatcher("task.jsp").forward(req, resp);
         }
@@ -39,6 +43,8 @@ public class TaskServlet extends HttpServlet {
 
         if ("create".equals(action)) {
             createTask(req, resp);
+        } else if ("update".equals(action)) {
+            updateTask(req, resp);
         }
     }
 
@@ -90,6 +96,79 @@ public class TaskServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
             resp.sendRedirect("project?status=error&message=" + e.getMessage());
+        }
+    }
+
+    private void editTask(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int taskId = Integer.parseInt(req.getParameter("id"));
+
+        try {
+            TaskDao taskDao = new TaskDao();
+            Task task = taskDao.getTaskById(taskId);
+
+            if (task != null) {
+                req.setAttribute("task", task);
+                req.setAttribute("projectId", task.getId_project());
+                req.getRequestDispatcher("edit_task.jsp").forward(req, resp);
+            } else {
+                resp.sendRedirect("project?status=error&message=Task not found");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            resp.sendRedirect("project?status=error&message=" + e.getMessage());
+        }
+    }
+
+    private void updateTask(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        int taskId = Integer.parseInt(req.getParameter("id"));
+        String description = req.getParameter("description");
+        String startDateStr = req.getParameter("startDate");
+        String endDateStr = req.getParameter("endDate");
+        int projectId = Integer.parseInt(req.getParameter("projectId"));
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        try {
+            java.util.Date utilStartDate = sdf.parse(startDateStr);
+            java.util.Date utilEndDate = sdf.parse(endDateStr);
+
+            java.sql.Date startDate = new java.sql.Date(utilStartDate.getTime());
+            java.sql.Date endDate = new java.sql.Date(utilEndDate.getTime());
+
+            Task task = new Task();
+            task.setId(taskId);
+            task.setDescription(description);
+            task.setStart_date(startDate);
+            task.setEnd_date(endDate);
+            task.setId_project(projectId);
+
+            TaskDao taskDao = new TaskDao();
+            taskDao.updateTask(task);
+
+            System.out.println("Task updated successfully");
+
+            resp.sendRedirect("task?action=list&projectId=" + projectId + "&status=success");
+        } catch (ParseException | SQLException e) {
+            e.printStackTrace();
+            resp.sendRedirect("task?action=edit&id=" + taskId + "&status=error&message=" + e.getMessage());
+        }
+    }
+
+    private void deleteTask(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        int taskId = Integer.parseInt(req.getParameter("id"));
+        int projectId = Integer.parseInt(req.getParameter("projectId"));
+
+        try {
+            TaskDao taskDao = new TaskDao();
+            taskDao.deleteTask(taskId);
+
+            System.out.println("Task deleted successfully");
+
+            resp.sendRedirect("task?action=list&projectId=" + projectId + "&status=success");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            resp.sendRedirect("task?action=list&projectId=" + projectId + "&status=error&message=" + e.getMessage());
+            System.out.println("task?action=list&projectId=" + projectId + "&status=error&message=" + e.getMessage());
         }
     }
 }

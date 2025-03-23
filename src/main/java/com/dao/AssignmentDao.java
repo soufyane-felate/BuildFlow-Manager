@@ -18,11 +18,9 @@ public class AssignmentDao {
             con = DBConnection.getConnection();
             con.setAutoCommit(false);
 
-            // First, decrease the resource quantity
             ResourceDao resourceDao = new ResourceDao();
             resourceDao.decreaseResourceQuantity(resourceId, quantity);
 
-            // Then, create the assignment
             String query = "INSERT INTO Assignment(taskId, ressourceId, userquantity) VALUES(?, ?, ?)";
             prst = con.prepareStatement(query);
             prst.setInt(1, taskId);
@@ -107,20 +105,17 @@ public class AssignmentDao {
         PreparedStatement prst = null;
 
         try {
-            // Get the assignment details first to know how much to return to resource
             Assignment assignment = getAssignmentById(assignmentId);
             if (assignment == null) return;
 
             con = DBConnection.getConnection();
             con.setAutoCommit(false);
 
-            // First, delete the assignment
             String query = "DELETE FROM Assignment WHERE id = ?";
             prst = con.prepareStatement(query);
             prst.setInt(1, assignmentId);
             prst.executeUpdate();
 
-            // Then, increase the resource quantity
             ResourceDao resourceDao = new ResourceDao();
             resourceDao.increaseResourceQuantity(assignment.getResourceId(), assignment.getQuantity());
 

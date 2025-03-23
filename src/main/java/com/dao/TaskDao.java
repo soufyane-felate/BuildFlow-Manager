@@ -68,7 +68,7 @@ public class TaskDao {
     }
 
     public void createAndAssignTask(Task task) throws SQLException {
-        String sql = "INSERT INTO Task(description, start_date, end_date, projectId) VALUES(?, ?, ?,?)";
+        String sql = "INSERT INTO Task(description, start_date, end_date, projectId) VALUES(?, ?, ?, ?)";
         try (Connection con = DBConnection.getConnection();
              PreparedStatement prst = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
             prst.setString(1, task.getDescription());
@@ -76,12 +76,6 @@ public class TaskDao {
             prst.setDate(3, new java.sql.Date(task.getEnd_date().getTime()));
             prst.setInt(4, task.getId_project());
             prst.executeUpdate();
-
-            try (ResultSet generatedKeys = prst.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    task.setId(generatedKeys.getInt(1));
-                }
-            }
         }
     }
 
@@ -104,5 +98,33 @@ public class TaskDao {
             }
         }
         return tasks;
+    }
+
+    public void updateTask(Task task) throws SQLException {
+        String query = "UPDATE Task SET description=?, start_date=?, end_date=? WHERE id=?";
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement prst = con.prepareStatement(query)) {
+            prst.setString(1, task.getDescription());
+            prst.setDate(2, new java.sql.Date(task.getStart_date().getTime()));
+            prst.setDate(3, new java.sql.Date(task.getEnd_date().getTime()));
+            prst.setInt(4, task.getId());
+            prst.executeUpdate();
+        }
+    }
+
+    public void deleteTask(int taskId) throws SQLException {
+        String deleteAssignmentsQuery = "DELETE FROM Assignment WHERE taskId=?";
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement prst = con.prepareStatement(deleteAssignmentsQuery)) {
+            prst.setInt(1, taskId);
+            prst.executeUpdate();
+        }
+
+        String deleteTaskQuery = "DELETE FROM Task WHERE id=?";
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement prst = con.prepareStatement(deleteTaskQuery)) {
+            prst.setInt(1, taskId);
+            prst.executeUpdate();
+        }
     }
 }
