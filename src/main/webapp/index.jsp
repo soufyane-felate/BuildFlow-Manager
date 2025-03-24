@@ -54,16 +54,17 @@
                     <a class="nav-link" href="#">Contact Us</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
-                        Page
+                    <a class="nav-link dropdown-toggle fw-medium" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-grid-3x3-gap-fill me-1"></i> Pages
                     </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Services</a></li>
-                        <li><a class="dropdown-item" href="createproject">Projects</a></li>
-                        <li><a class="dropdown-item" href="addresource">Resource</a></li>
-                        <li><a class="dropdown-item" href="task">Task</a></li>
-                        <li><a class="dropdown-item" href="projectList">project list</a></li>
-                        <li><a class="dropdown-item" href="resourceList">ressource list</a></li>
+                    <ul class="dropdown-menu shadow-sm border-light" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item py-2" href="#"><i class="bi bi-gear me-2"></i>Services</a></li>
+                        <li><a class="dropdown-item py-2" href="createproject"><i class="bi bi-plus-circle me-2"></i>Create Project</a></li>
+                        <li><a class="dropdown-item py-2" href="addresource"><i class="bi bi-person-plus me-2"></i>Add Resource</a></li>
+                        <li><a class="dropdown-item py-2" href="task"><i class="bi bi-check2-square me-2"></i>Tasks</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item py-2" href="projectList"><i class="bi bi-list-ul me-2"></i>Project List</a></li>
+                        <li><a class="dropdown-item py-2" href="resourceList"><i class="bi bi-people me-2"></i>Resource List</a></li>
                     </ul>
                 </li>
             </ul>

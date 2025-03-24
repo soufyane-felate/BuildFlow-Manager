@@ -106,11 +106,16 @@ public class RessourceServlet extends HttpServlet {
 
     private void deleteResource(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
         int resourceId = Integer.parseInt(req.getParameter("id"));
+       try {
+           ResourceDao resourceDao = new ResourceDao();
+           resourceDao.deleteResource(resourceId);
+           System.out.println("delete resource success");
+           resp.sendRedirect("resource?action=list&status=success");
+       }catch (SQLException e){
+           e.printStackTrace();
+           System.out.println(e.getMessage());
+       }
 
-        ResourceDao resourceDao = new ResourceDao();
-        resourceDao.deleteResource(resourceId);
-
-        resp.sendRedirect("resource?action=list&status=success");
     }
     private void listResources(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {

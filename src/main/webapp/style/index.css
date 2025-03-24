@@ -166,7 +166,11 @@ body {
 .navbar-nav .nav-link.active {
     color: var(--primary-color);
 }
-
+.nav-item .dropdown-menu .dropdown-item:hover {
+    background-color: rgba(255, 94, 20, 0.95);
+    color: #fff;
+    border-radius: 5px;
+}
 /* Hero Section */
 .hero {
     background: linear-gradient(rgba(0, 39, 77, 0.7), rgba(0, 39, 77, 0.7)), url('https://via.placeholder.com/1920x800') no-repeat center center/cover;

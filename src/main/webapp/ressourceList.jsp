@@ -56,12 +56,8 @@
                         <p class="card-title">supplierInfo : <%= resource.getSupplierInfo()%></p>
 
                         <div class="mt-3">
-                            <a href="editResource.jsp?id=<%= resource.getId() %>" class="btn btn-primary">Edit</a>
-                            <a href="resource?action=delete&id=<%= resource.getId() %>"
-                               class="btn btn-danger"
-                               onclick="return confirm('Are you sure you want to delete this resource?');">
-                                Delete
-                            </a>
+                            <a href="editResource?id=<%= resource.getId() %>" class="btn btn-primary">Edit</a>
+
                         </div>
                     </div>
                 </div>
