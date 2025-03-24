@@ -110,6 +110,7 @@
             <div class="col-12 mt-3">
                 <button type="submit" class="btn btn-primary">Assign Selected Resources</button>
                 <a href="task?action=view&projectId=<%= projectId %>" class="btn btn-secondary">Cancel</a>
+                <a href="addresource" class="btn btn-outline-secondary">Create new resource</a>
             </div>
             <% } else { %>
             <div class="col-12">
